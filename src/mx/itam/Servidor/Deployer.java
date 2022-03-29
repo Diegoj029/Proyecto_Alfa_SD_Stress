@@ -11,7 +11,7 @@ public class Deployer extends Thread{
         LocateRegistry.createRegistry(1099);
 
         String name= "Registro";
-        int N = 5;
+        int N = 10;
         Servidor servidor = new Servidor(N);
         servidor.deploy(name);
         //System.out.println("Hola");

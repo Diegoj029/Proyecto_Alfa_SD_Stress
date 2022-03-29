@@ -61,9 +61,9 @@ public class Cliente extends Thread {
                 String[] mensaje = new String(messageIn.getData()).trim().split(";");
                 int posMonstruo = Integer.parseInt(mensaje[0]);
                 String nomGanador = mensaje[1];
-                //System.out.println(posMonstruo + nomGanador);
 
-                golpeaMonstruo(posMonstruo);
+                System.out.println(posMonstruo);
+                ganaRonda();
             }
         } catch (RemoteException | NotBoundException e) {
             System.out.println("Connect: " + e.getMessage());
@@ -118,6 +118,7 @@ public class Cliente extends Thread {
     }
 
     public void golpeaMonstruo(int posMonstruo){
+        System.out.println(posMonstruo);
         try {
             int golpeCasilla = 0;
             while (golpeCasilla != posMonstruo){

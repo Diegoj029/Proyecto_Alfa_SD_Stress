@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Tests {
-    private static final int numClientes = 1;
-    private static final int numRondas = 10;
+    private static final int numClientes = 2;
     private static ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
     public static void main(String[] args) throws InterruptedException {
@@ -21,8 +20,11 @@ public class Tests {
         for(int i = 0; i<numClientes; i++){
             Cliente temp = new Cliente(nomCliente + i);
             System.out.println("Cliente " + i + " creado");
-            temp.start();
             clientes.add(temp);
+        }
+
+        for(int j = 0; j < clientes.size(); j++){
+            clientes.get(j).start();
         }
 
         System.out.println("Jugadores creados");
