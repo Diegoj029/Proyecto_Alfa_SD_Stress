@@ -11,17 +11,21 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Random;
 
-public class Cliente {
+public class Cliente extends Thread {
     private static int portTCP;
     private static String nombreJugador;
     private static String IP;
 
-    public Cliente(String nombreJugador){
-        this.nombreJugador = nombreJugador;
+    public Cliente(String nombreCliente){
+        this.nombreJugador = nombreCliente;
         //RMI
         System.setProperty("java.security.policy", "src/mx/itam/Client/client.policy");
+    }
 
+    @Override
+    public void run() {
         //En versiones recientes de la maquina virutal de java marca error
         /*if(System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
@@ -58,6 +62,8 @@ public class Cliente {
                 int posMonstruo = Integer.parseInt(mensaje[0]);
                 String nomGanador = mensaje[1];
                 //System.out.println(posMonstruo + nomGanador);
+
+                golpeaMonstruo(posMonstruo);
             }
         } catch (RemoteException | NotBoundException e) {
             System.out.println("Connect: " + e.getMessage());
@@ -101,5 +107,26 @@ public class Cliente {
 
     public void ganaRonda(){
         this.mensajeTCP(nombreJugador);
+        System.out.println(nombreJugador + " Golepeo el monstruo");
+    }
+
+    private static int randomNumber(int max, int min){
+        Random random = new Random();
+
+        int value = random.nextInt(max - min) + min;
+        return  value;
+    }
+
+    public void golpeaMonstruo(int posMonstruo){
+        try {
+            int golpeCasilla = 0;
+            while (golpeCasilla != posMonstruo){
+                Thread.sleep(10);
+                golpeCasilla = randomNumber(9,1);
+            }
+            ganaRonda();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

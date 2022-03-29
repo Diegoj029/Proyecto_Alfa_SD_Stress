@@ -63,7 +63,7 @@ public class Servidor implements Registro {
 
             System.out.println("Jugador encontrado");
 
-            Thread.sleep(1000);
+            Thread.sleep(2000);
 
             System.out.println("Arranca el juego");
             //Arranca el juego
@@ -81,22 +81,22 @@ public class Servidor implements Registro {
     public void loopJuego() {
         try {
             while (!encuentraGanador){
-                System.out.println("Envia UDP");
+                //System.out.println("Envia UDP");
                 this.recibeTCP = false;
                 int posMonstruo = randomNumber(9,1);
                 enviaMensajeUDP(posMonstruo + ";null");
 
-                System.out.println("Genera TCP");
-                System.out.println(recibeTCP);
+                //System.out.println("Genera TCP");
+                //System.out.println(recibeTCP);
 
                 while (!recibeTCP){
-                    System.out.println("Escucho");
+                    //System.out.println("Escucho");
                     Socket clientSocket = listenSocket.accept();  // Listens for a connection to be made to this socket and accepts it. The method blocks until a connection is made.
-                    System.out.println("Recibo TCP");
+                    //System.out.println("Recibo TCP");
                     Connection c = new Connection(clientSocket);
                     c.start();
                     Thread.sleep(1000);
-                    System.out.println(recibeTCP);
+                    //System.out.println(recibeTCP);
                 }
             }
             enviaMensajeUDP("0;" + nomGanador);
