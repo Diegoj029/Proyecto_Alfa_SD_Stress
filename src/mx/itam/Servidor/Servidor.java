@@ -69,6 +69,10 @@ public class Servidor implements Registro {
             //Arranca el juego
             listenSocket = new ServerSocket(portTCP);
 
+            while (true){
+                loopJuego();
+            }
+
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -76,7 +80,6 @@ public class Servidor implements Registro {
 
     public void loopJuego() {
         try {
-            encuentraGanador = false;
             while (!encuentraGanador){
                 System.out.println("Envia UDP");
                 this.recibeTCP = false;
@@ -101,6 +104,7 @@ public class Servidor implements Registro {
             for(int i = 0; i < jugadores.size();i++){
                 jugadores.get(i).resetWinCount();
             }
+            encuentraGanador = false;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }

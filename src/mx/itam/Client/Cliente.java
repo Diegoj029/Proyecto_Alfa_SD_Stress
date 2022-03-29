@@ -17,7 +17,8 @@ public class Cliente {
     private static String nombreJugador;
     private static String IP;
 
-    public Cliente(String nombreCliente){
+    public Cliente(String nombreJugador){
+        this.nombreJugador = nombreJugador;
         //RMI
         System.setProperty("java.security.policy", "src/mx/itam/Client/client.policy");
 
@@ -31,7 +32,6 @@ public class Cliente {
         try {
             Registry registry = LocateRegistry.getRegistry("localhost");
             Registro comp = (Registro) registry.lookup(name);
-            String nombreJugador = "nombreCliente";
             String[] datosRegistro = comp.registro(nombreJugador).split(";");
 
             String IP = datosRegistro[0];
@@ -41,7 +41,7 @@ public class Cliente {
 
             //Se crea el Tablero
             //Tablero tab = new Tablero();
-            this.conectar(nombreJugador, IP, portTCP);
+            this.conectar(IP, portTCP);
 
             //Se registra el jugador en el sevidor Multicast UDP
             InetAddress group = InetAddress.getByName(inetA); // destination multicast group
@@ -70,9 +70,8 @@ public class Cliente {
         }
     }
 
-    private void conectar(String nombreJugador, String IP, int portTCP){
+    private void conectar(String IP, int portTCP){
         this.portTCP = portTCP;
-        this.nombreJugador = nombreJugador;
         this.IP = IP;
     }
 
