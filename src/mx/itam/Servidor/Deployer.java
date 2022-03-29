@@ -4,16 +4,21 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
 public class Deployer {
-    public static void main() throws RemoteException{
+    private static Servidor servidor;
+    public Deployer(int puntuacionGanadora) throws RemoteException{
         String serverAddress = "localhost";
         System.setProperty("java.rmi.server.hostname",serverAddress);
 
         LocateRegistry.createRegistry(1099);
 
         String name= "Registro";
-        int N = 5;
-        Servidor servidor = new Servidor(N);
+        int N = puntuacionGanadora;
+        servidor = new Servidor(N);
         servidor.deploy(name);
         //System.out.println("Hola");
+    }
+
+    public boolean getEncuentraGanador(){
+        return servidor.encuentraGanador;
     }
 }

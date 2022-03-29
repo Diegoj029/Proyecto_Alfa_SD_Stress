@@ -4,6 +4,7 @@ import mx.itam.Clases.Jugador;
 import mx.itam.Client.Cliente;
 import mx.itam.Servidor.Deployer;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,19 +14,28 @@ public class Tests {
 
     public static void main(String[] args) {
         //Ejecuta el servidor
-        Deployer deployer;
+        try {
+            Deployer deployer = new Deployer(5);
 
-        //Crea N clientes
-        String nomCliente = "Cliente ";
-        for(int i = 0; i<numClientes; i++){
-            Cliente temp = new Cliente(nomCliente+i);
-            clientes.add(temp);
-        }
+            //Crea N clientes
+            String nomCliente = "Cliente ";
+            for(int i = 0; i<numClientes; i++){
+                Cliente temp = new Cliente(nomCliente+i);
+                clientes.add(temp);
+            }
 
-        boolean ganoJugador = false;
-        while(!ganoJugador){
-            int ganador = ganadorRonda();
-            clientes.get(ganador).ganaRonda();
+            int numJuegos = 1;
+            for(int i = 0; i<numJuegos;i++){
+                boolean ganoJugador = false;
+                while(!ganoJugador){
+                    int ganador = ganadorRonda();
+                    clientes.get(ganador).ganaRonda();
+                    ganoJugador = deployer.getEncuentraGanador();
+                }
+            }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
