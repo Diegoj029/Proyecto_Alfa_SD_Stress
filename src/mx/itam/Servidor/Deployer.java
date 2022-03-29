@@ -5,6 +5,7 @@ import java.rmi.registry.LocateRegistry;
 
 public class Deployer {
     private static Servidor servidor;
+
     public Deployer(int puntuacionGanadora) throws RemoteException{
         String serverAddress = "localhost";
         System.setProperty("java.rmi.server.hostname",serverAddress);

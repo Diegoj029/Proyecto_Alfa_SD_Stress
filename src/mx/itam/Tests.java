@@ -17,11 +17,13 @@ public class Tests {
         //Ejecuta el servidor
         try {
             Deployer deployer = new Deployer(5);
+            System.out.println("Servidor creado");
 
             //Crea N clientes
             String nomCliente = "Cliente ";
             for(int i = 0; i<numClientes; i++){
-                Cliente temp = new Cliente(nomCliente+i);
+                Cliente temp = new Cliente(nomCliente + i);
+                System.out.println("Cliente " + i + " creado");
                 clientes.add(temp);
             }
 
