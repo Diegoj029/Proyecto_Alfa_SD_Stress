@@ -1,15 +1,10 @@
 package mx.itam.Servidor;
 
-import mx.itam.Interfaces.Registro;
-
-import java.rmi.RemoteException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 
 public class Deployer {
-    public static void main(String args[]) throws RemoteException{
+    public static void main() throws RemoteException{
         String serverAddress = "localhost";
         System.setProperty("java.rmi.server.hostname",serverAddress);
 

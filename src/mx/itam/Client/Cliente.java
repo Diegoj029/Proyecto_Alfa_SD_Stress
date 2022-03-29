@@ -2,17 +2,21 @@ package mx.itam.Client;
 
 import mx.itam.Interfaces.Registro;
 import mx.itam.Tablero.Tablero;
+
+import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
+import java.net.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.SocketException;
 
 public class Cliente {
+    private static int portTCP;
+    private static String nombreJugador;
+    private static String IP;
+
     public Cliente(String nombreCliente){
         //RMI
         System.setProperty("java.security.policy", "src/mx/itam/Client/client.policy");
@@ -36,8 +40,8 @@ public class Cliente {
             String inetA = datosRegistro[3];
 
             //Se crea el Tablero
-            Tablero tab = new Tablero();
-            tab.conectar(nombreJugador, IP, portTCP);
+            //Tablero tab = new Tablero();
+            this.conectar(nombreJugador, IP, portTCP);
 
             //Se registra el jugador en el sevidor Multicast UDP
             InetAddress group = InetAddress.getByName(inetA); // destination multicast group
@@ -53,14 +57,7 @@ public class Cliente {
                 String[] mensaje = new String(messageIn.getData()).trim().split(";");
                 int posMonstruo = Integer.parseInt(mensaje[0]);
                 String nomGanador = mensaje[1];
-                System.out.println(posMonstruo + nomGanador);
-
-                //Se muestra el monstruo o el mensaje del ganador en el juego
-                if (nomGanador.equals(nombreJugador)) {
-                    tab.muestra(posMonstruo, true);
-                } else {
-                    tab.muestra(posMonstruo, false);
-                }
+                //System.out.println(posMonstruo + nomGanador);
             }
         } catch (RemoteException | NotBoundException e) {
             System.out.println("Connect: " + e.getMessage());
@@ -71,5 +68,39 @@ public class Cliente {
         } finally {
             if (socketUDP != null) socketUDP.close();
         }
+    }
+
+    private void conectar(String nombreJugador, String IP, int portTCP){
+        this.portTCP = portTCP;
+        this.nombreJugador = nombreJugador;
+        this.IP = IP;
+    }
+
+    private void mensajeTCP(String mensaje) {
+        Socket socket = null;
+        try {
+            socket = new Socket(IP, portTCP);
+            //System.out.println(mensaje);
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            byte[] data = mensaje.getBytes();
+            out.writeInt(data.length);
+            out.write(data);
+        } catch (UnknownHostException e) {
+            System.out.println("Sock:" + e.getMessage());
+        } catch (EOFException e) {
+            System.out.println("EOF:" + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("IO: -" + e.getMessage());
+        } finally {
+            if (socket != null) try {
+                socket.close();
+            } catch (IOException e) {
+                System.out.println("close:" + e.getMessage());
+            }
+        }
+    }
+
+    public void ganaRonda(){
+        this.mensajeTCP(nombreJugador);
     }
 }
