@@ -13,7 +13,7 @@ import java.net.MulticastSocket;
 import java.net.SocketException;
 
 public class Cliente {
-    public static void main(String[] args){
+    public Cliente(String nombreCliente){
         //RMI
         System.setProperty("java.security.policy", "src/mx/itam/Client/client.policy");
 
@@ -27,7 +27,7 @@ public class Cliente {
         try {
             Registry registry = LocateRegistry.getRegistry("localhost");
             Registro comp = (Registro) registry.lookup(name);
-            String nombreJugador = "Rodrigo";
+            String nombreJugador = "nombreCliente";
             String[] datosRegistro = comp.registro(nombreJugador).split(";");
 
             String IP = datosRegistro[0];
