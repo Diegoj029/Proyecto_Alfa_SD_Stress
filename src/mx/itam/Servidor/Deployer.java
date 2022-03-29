@@ -21,4 +21,8 @@ public class Deployer {
     public boolean getEncuentraGanador(){
         return servidor.encuentraGanador;
     }
+
+    public void empiezaRonda(){
+        servidor.loopJuego();
+    }
 }

@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class Tests {
     private static final int numClientes = 5;
+    private static final int numRondas = 1;
     private static ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
     public static void main(String[] args) {
@@ -24,8 +25,8 @@ public class Tests {
                 clientes.add(temp);
             }
 
-            int numJuegos = 1;
-            for(int i = 0; i<numJuegos;i++){
+            for(int i = 0; i<numRondas;i++){
+                deployer.empiezaRonda();
                 boolean ganoJugador = false;
                 while(!ganoJugador){
                     int ganador = ganadorRonda();
