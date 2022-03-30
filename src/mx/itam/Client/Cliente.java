@@ -57,8 +57,9 @@ public class Cliente {
             socketUDP.joinGroup(group);
 
             //Espera los mensajes del servidor Multicast UDP y los envía al tablero
-            long inicio = System.nanoTime();
+            
             while(true) {
+                long inicio = System.nanoTime();
                 byte[] buffer = new byte[1000];
                 DatagramPacket messageIn = new DatagramPacket(buffer, buffer.length);
                 socketUDP.receive(messageIn);
