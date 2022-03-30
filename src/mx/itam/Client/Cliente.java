@@ -65,7 +65,7 @@ public class Cliente {
                 socketUDP.receive(messageIn);
                 long fin = System.nanoTime();
                 double tiempo = (double)((fin-inicio)/1000);
-                TestCSV.escribeCSV(String.valueOf(tiempo+'\n'),TestCSV.nombreCsv);
+                TestCSV.escribeCSV(tiempo+"\n",TestCSV.nombreCsv);
 
                 String[] mensaje = new String(messageIn.getData()).trim().split(";");
                 ronda = Integer.parseInt(mensaje[0]);
