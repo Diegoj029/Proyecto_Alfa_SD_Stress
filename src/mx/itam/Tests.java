@@ -11,7 +11,6 @@ import java.util.Random;
 
 public class Tests {
     private static final int numClientes = 10;
-    //private static final int numRondas = 50;
     private static ArrayList<TestCliente> clientes = new ArrayList<TestCliente>();
 
     public static void main(String[] args) throws InterruptedException {

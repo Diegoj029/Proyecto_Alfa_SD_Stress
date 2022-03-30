@@ -179,7 +179,7 @@ class Connection extends Thread {
 
             if(rondaJugador == Servidor.ronda) {
                 String nombreUsuario = mensaje[1];
-                System.out.println("Ronda " + Servidor.ronda + ": " + nombreUsuario);
+                System.out.println("\nRonda " + Servidor.ronda + ": " + nombreUsuario);
                 int i = 0;
                 boolean encuentraJugador = false;
 
@@ -196,6 +196,9 @@ class Connection extends Thread {
                 }
 
                 Servidor.ronda = Servidor.ronda + 1;
+            }else{
+                //System.out.println("Recibí mensaje de la ronda " + rondaJugador + " y lo ignore");
+                System.out.print(" ");
             }
         } catch (SocketException e) {
             Servidor.recibeTCP = true;
