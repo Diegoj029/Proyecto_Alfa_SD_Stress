@@ -17,7 +17,7 @@ public class Cliente {
     private int portTCP;
     public String nombreJugador;
     private String IP;
-    public boolean reciboPosMonstruo = false;
+    private int ronda;
 
     public Cliente(String nombreCliente){
         this.nombreJugador = nombreCliente;
@@ -60,12 +60,13 @@ public class Cliente {
                 socketUDP.receive(messageIn);
 
                 String[] mensaje = new String(messageIn.getData()).trim().split(";");
-                int posMonstruo = Integer.parseInt(mensaje[0]);
-                String nomGanador = mensaje[1];
+                ronda = Integer.parseInt(mensaje[0]);
+                int posMonstruo = Integer.parseInt(mensaje[1]);
+                String nomGanador = mensaje[2];
 
                 System.out.println(nombreJugador + " recibe: " + posMonstruo + ";" + nomGanador);
-                reciboPosMonstruo = true;
-                Thread.sleep(100);
+                this.ganaRonda();
+                //Thread.sleep(100);
             }
         } catch (RemoteException | NotBoundException e) {
             System.out.println("Connect: " + e.getMessage());
@@ -73,8 +74,6 @@ public class Cliente {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
             System.out.println("IO: " + e.getMessage());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         } finally {
             if (socketUDP != null) socketUDP.close();
         }
@@ -99,7 +98,7 @@ public class Cliente {
         } catch (EOFException e) {
             System.out.println("EOF:" + e.getMessage());
         } catch (IOException e) {
-            System.out.println("IO: -" + e.getMessage());
+            System.out.println("No mande a tiempo");
         } finally {
             if (socket != null) try {
                 socket.close();
@@ -109,9 +108,9 @@ public class Cliente {
         }
     }
 
-    public void ganaRonda(String jugadorGanador){
-        this.mensajeTCP(jugadorGanador);
-        System.out.println(jugadorGanador + " Golepeo el monstruo");
+    public void ganaRonda(){
+        this.mensajeTCP(this.ronda + ";" + this.nombreJugador);
+        System.out.println(this.nombreJugador + " Golepeo el monstruo en la ronda " + this.ronda);
     }
 
     private static int randomNumber(int max, int min){
@@ -121,17 +120,16 @@ public class Cliente {
         return  value;
     }
 
-    /*public void golpeaMonstruo(int posMonstruo){
-        System.out.println(posMonstruo);
+    public void golpeaMonstruo(int posMonstruo){
         try {
             int golpeCasilla = 0;
             while (golpeCasilla != posMonstruo){
-                Thread.sleep(10);
+                Thread.sleep(100);
                 golpeCasilla = randomNumber(9,1);
             }
-            ganaRonda(jugadorGanador);
+            ganaRonda();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 }

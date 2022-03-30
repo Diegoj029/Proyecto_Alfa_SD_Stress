@@ -14,14 +14,14 @@ public class TestCliente extends Thread{
         this.cliente.deploy();
     }
 
-    public void ganaRonda(String jugadorGanador){
-        /*try {
+    /*public void ganaRonda(String jugadorGanador){
+        *//*try {
             while (!this.cliente.reciboPosMonstruo){
                 Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }*/
+        }*//*
         this.cliente.ganaRonda(jugadorGanador);
-    }
+    }*/
 }

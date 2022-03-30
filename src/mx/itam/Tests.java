@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class Tests {
     private static final int numClientes = 10;
-    private static final int numRondas = 50;
+    //private static final int numRondas = 50;
     private static ArrayList<TestCliente> clientes = new ArrayList<TestCliente>();
 
     public static void main(String[] args) throws InterruptedException {
@@ -34,14 +34,12 @@ public class Tests {
         }*/
 
 
-        Thread.sleep(5000);
-
-        for(int i = 0; i<numRondas;i++){
+        /*for(int i = 0; i<numRondas;i++){
             int ganador = ganadorRonda();
             System.out.println("Ganador: " + ganador);
             clientes.get(ganador).ganaRonda("Cliente " + ganador);
             Thread.sleep(1000);
-        }
+        }*/
     }
 
     public static int ganadorRonda(){

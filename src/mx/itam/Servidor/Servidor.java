@@ -66,7 +66,7 @@ public class Servidor implements Registro {
 
             Thread.sleep(2000);
 
-            System.out.println("Arranca el juego");
+            System.out.println("\n------Arranca el juego------\n");
             //Arranca el juego
             listenSocket = new ServerSocket(portTCP);
 
@@ -85,7 +85,7 @@ public class Servidor implements Registro {
                 //System.out.println("Envia UDP");
                 this.recibeTCP = false;
                 int posMonstruo = randomNumber(9,1);
-                enviaMensajeUDP(posMonstruo + ";null");
+                enviaMensajeUDP(ronda + ";" +posMonstruo + ";null");
 
                 //System.out.println("Genera TCP");
                 //System.out.println(recibeTCP);
@@ -96,15 +96,16 @@ public class Servidor implements Registro {
                     //System.out.println("Recibo TCP");
                     Connection c = new Connection(clientSocket);
                     c.start();
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                     //System.out.println(recibeTCP);
                 }
             }
-            enviaMensajeUDP("0;" + nomGanador);
+            enviaMensajeUDP(ronda + ";0;" + nomGanador);
             System.out.println("GANADOR: " + nomGanador);
             for(int i = 0; i < jugadores.size();i++){
                 jugadores.get(i).resetWinCount();
             }
+            ronda = 1;
             encuentraGanador = false;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -173,22 +174,28 @@ class Connection extends Thread {
             int length = in.readInt();
             byte[] array = new byte[length];
             in.readFully(array);
-            String nombreUsuario = new String(array);
-            System.out.println("Ronda " + Servidor.ronda + ": " + nombreUsuario);
-            Servidor.ronda = Servidor.ronda + 1;
-            int i = 0;
-            boolean encuentraJugador = false;
+            String[] mensaje = new String(array).split(";");
+            int rondaJugador = Integer.parseInt(mensaje[0]);
 
-            while (i < Servidor.jugadores.size() && !encuentraJugador) {
-                encuentraJugador = Servidor.jugadores.get(i).getId().equals(nombreUsuario);
-                i++;
-            }
+            if(rondaJugador == Servidor.ronda) {
+                String nombreUsuario = mensaje[1];
+                System.out.println("Ronda " + Servidor.ronda + ": " + nombreUsuario);
+                int i = 0;
+                boolean encuentraJugador = false;
 
-            if (encuentraJugador) {
-                Servidor.encuentraGanador = Servidor.jugadores.get(i - 1).incWinCount();
-                System.out.println("Puntos: " + Servidor.jugadores.get(i - 1).getWinCount());
-                Servidor.nomGanador = Servidor.jugadores.get(i - 1).getId();
-                Servidor.recibeTCP = true;
+                while (i < Servidor.jugadores.size() && !encuentraJugador) {
+                    encuentraJugador = Servidor.jugadores.get(i).getId().equals(nombreUsuario);
+                    i++;
+                }
+
+                if (encuentraJugador) {
+                    Servidor.encuentraGanador = Servidor.jugadores.get(i - 1).incWinCount();
+                    System.out.println("Puntos: " + Servidor.jugadores.get(i - 1).getWinCount());
+                    Servidor.nomGanador = Servidor.jugadores.get(i - 1).getId();
+                    Servidor.recibeTCP = true;
+                }
+
+                Servidor.ronda = Servidor.ronda + 1;
             }
         } catch (SocketException e) {
             Servidor.recibeTCP = true;
