@@ -10,19 +10,25 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Tests {
-    private static final int numClientes = 10;
+    private static final int[] numClientes = {50,100,150,250,350,450,500};
     private static ArrayList<TestCliente> clientes = new ArrayList<TestCliente>();
 
     public static void main(String[] args) throws InterruptedException {
         //Crea N clientes
         System.out.println("Se crean los clientes");
-        for(int i = 0; i<numClientes; i++){
-            String nomCliente = "Cliente " + i;
-            TestCliente temp = new TestCliente(nomCliente);
-            System.out.println(nomCliente + " creado");
-            temp.start();
-            clientes.add(temp);
-            Thread.sleep(100);
+
+        for(int numCliente: numClientes) {
+            TestCSV.nombreCsv = "prueba" + numCliente + ".csv";
+            for(int j = 0; j<10;j++) {
+                for (int i = 0; i < numCliente; i++) {
+                    String nomCliente = "Cliente " + i;
+                    TestCliente temp = new TestCliente(nomCliente);
+                    System.out.println(nomCliente + " creado");
+                    temp.start();
+                    clientes.add(temp);
+                    Thread.sleep(100);
+                }
+            }
         }
 
         System.out.println("\n------Jugadores creados------\n");

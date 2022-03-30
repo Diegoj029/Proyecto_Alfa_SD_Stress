@@ -2,6 +2,7 @@ package mx.itam.Client;
 
 import mx.itam.Interfaces.Registro;
 import mx.itam.Tablero.Tablero;
+import mx.itam.TestCSV;
 
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -37,7 +38,9 @@ public class Cliente {
         try {
             Registry registry = LocateRegistry.getRegistry("localhost");
             Registro comp = (Registro) registry.lookup(name);
+
             String[] datosRegistro = comp.registro(nombreJugador).split(";");
+
 
             String IP = datosRegistro[0];
             int portTCP = Integer.parseInt(datosRegistro[1]);
@@ -54,10 +57,14 @@ public class Cliente {
             socketUDP.joinGroup(group);
 
             //Espera los mensajes del servidor Multicast UDP y los envía al tablero
+            long inicio = System.nanoTime();
             while(true) {
                 byte[] buffer = new byte[1000];
                 DatagramPacket messageIn = new DatagramPacket(buffer, buffer.length);
                 socketUDP.receive(messageIn);
+                long fin = System.nanoTime();
+                double tiempo = (double)((fin-inicio)/1000);
+                TestCSV.escribeCSV(String.valueOf(tiempo+'\n'),TestCSV.nombreCsv);
 
                 String[] mensaje = new String(messageIn.getData()).trim().split(";");
                 ronda = Integer.parseInt(mensaje[0]);
@@ -66,6 +73,7 @@ public class Cliente {
 
                 System.out.println(nombreJugador + " recibe: " + posMonstruo + ";" + nomGanador);
                 this.ganaRonda();
+                inicio = System.nanoTime();
                 //Thread.sleep(100);
             }
         } catch (RemoteException | NotBoundException e) {
