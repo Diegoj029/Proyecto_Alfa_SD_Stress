@@ -13,9 +13,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Random;
 
-public class Cliente extends Thread {
+public class Cliente {
     private static int portTCP;
-    private static String nombreJugador;
+    public static String nombreJugador;
     private static String IP;
 
     public Cliente(String nombreCliente){
@@ -24,8 +24,7 @@ public class Cliente extends Thread {
         System.setProperty("java.security.policy", "src/mx/itam/Client/client.policy");
     }
 
-    @Override
-    public void run() {
+    public void deploy() {
         //En versiones recientes de la maquina virutal de java marca error
         /*if(System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
@@ -33,6 +32,7 @@ public class Cliente extends Thread {
 
         MulticastSocket socketUDP = null;
         String name = "Registro";
+        System.out.println(nombreJugador + " arranco");
         try {
             Registry registry = LocateRegistry.getRegistry("localhost");
             Registro comp = (Registro) registry.lookup(name);
@@ -62,8 +62,7 @@ public class Cliente extends Thread {
                 int posMonstruo = Integer.parseInt(mensaje[0]);
                 String nomGanador = mensaje[1];
 
-                System.out.println(posMonstruo);
-                ganaRonda();
+                System.out.println(nombreJugador + " recibe: " + posMonstruo + ";" + nomGanador);
             }
         } catch (RemoteException | NotBoundException e) {
             System.out.println("Connect: " + e.getMessage());
@@ -105,9 +104,9 @@ public class Cliente extends Thread {
         }
     }
 
-    public void ganaRonda(){
-        this.mensajeTCP(nombreJugador);
-        System.out.println(nombreJugador + " Golepeo el monstruo");
+    public void ganaRonda(String jugadorGanador){
+        this.mensajeTCP(jugadorGanador);
+        System.out.println(jugadorGanador + " Golepeo el monstruo");
     }
 
     private static int randomNumber(int max, int min){
@@ -117,7 +116,7 @@ public class Cliente extends Thread {
         return  value;
     }
 
-    public void golpeaMonstruo(int posMonstruo){
+    /*public void golpeaMonstruo(int posMonstruo){
         System.out.println(posMonstruo);
         try {
             int golpeCasilla = 0;
@@ -125,9 +124,9 @@ public class Cliente extends Thread {
                 Thread.sleep(10);
                 golpeCasilla = randomNumber(9,1);
             }
-            ganaRonda();
+            ganaRonda(jugadorGanador);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

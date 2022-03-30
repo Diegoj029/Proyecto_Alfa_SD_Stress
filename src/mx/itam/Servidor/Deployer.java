@@ -3,7 +3,7 @@ package mx.itam.Servidor;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
-public class Deployer extends Thread{
+public class Deployer{
     public static void main(String args[]) throws RemoteException{
         String serverAddress = "localhost";
         System.setProperty("java.rmi.server.hostname",serverAddress);

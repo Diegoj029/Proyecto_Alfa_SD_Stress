@@ -26,6 +26,7 @@ public class Servidor implements Registro {
     private static final int portTCP = 49200;
     private static final int portUDP = 49159;
     private static final String inetA = "228.5.6.7";
+    public static int ronda = 1;
 
     public Servidor() throws RemoteException{
         super();
@@ -173,7 +174,8 @@ class Connection extends Thread {
             byte[] array = new byte[length];
             in.readFully(array);
             String nombreUsuario = new String(array);
-            System.out.println(nombreUsuario);
+            System.out.println("Ronda " + Servidor.ronda + ": " + nombreUsuario);
+            Servidor.ronda = Servidor.ronda + 1;
             int i = 0;
             boolean encuentraJugador = false;
 

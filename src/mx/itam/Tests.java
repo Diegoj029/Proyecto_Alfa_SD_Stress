@@ -10,31 +10,38 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Tests {
-    private static final int numClientes = 2;
-    private static ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+    private static final int numClientes = 10;
+    private static final int numRondas = 50;
+    private static ArrayList<TestCliente> clientes = new ArrayList<TestCliente>();
 
     public static void main(String[] args) throws InterruptedException {
         //Crea N clientes
-        String nomCliente = "Cliente ";
         System.out.println("Se crean los clientes");
         for(int i = 0; i<numClientes; i++){
-            Cliente temp = new Cliente(nomCliente + i);
-            System.out.println("Cliente " + i + " creado");
+            String nomCliente = "Cliente " + i;
+            TestCliente temp = new TestCliente(nomCliente);
+            System.out.println(nomCliente + " creado");
+            temp.start();
             clientes.add(temp);
+            Thread.sleep(100);
         }
 
-        for(int j = 0; j < clientes.size(); j++){
+        System.out.println("------Jugadores creados------");
+        //Thread.sleep(1000);
+
+        /*for(int j = 0; j < clientes.size(); j++){
             clientes.get(j).start();
-        }
+        }*/
 
-        System.out.println("Jugadores creados");
 
-/*        for(int i = 0; i<numRondas;i++){
+        Thread.sleep(5000);
+
+        for(int i = 0; i<numRondas;i++){
             int ganador = ganadorRonda();
             System.out.println("Ganador: " + ganador);
-            clientes.get(ganador).ganaRonda();
+            clientes.get(ganador).ganaRonda("Cliente " + ganador);
             Thread.sleep(1000);
-        }*/
+        }
     }
 
     public static int ganadorRonda(){
