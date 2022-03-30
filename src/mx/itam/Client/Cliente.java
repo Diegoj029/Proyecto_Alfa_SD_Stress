@@ -14,9 +14,10 @@ import java.rmi.registry.Registry;
 import java.util.Random;
 
 public class Cliente {
-    private static int portTCP;
-    public static String nombreJugador;
-    private static String IP;
+    private int portTCP;
+    public String nombreJugador;
+    private String IP;
+    public boolean reciboPosMonstruo = false;
 
     public Cliente(String nombreCliente){
         this.nombreJugador = nombreCliente;
@@ -63,6 +64,8 @@ public class Cliente {
                 String nomGanador = mensaje[1];
 
                 System.out.println(nombreJugador + " recibe: " + posMonstruo + ";" + nomGanador);
+                reciboPosMonstruo = true;
+                Thread.sleep(100);
             }
         } catch (RemoteException | NotBoundException e) {
             System.out.println("Connect: " + e.getMessage());
@@ -70,6 +73,8 @@ public class Cliente {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
             System.out.println("IO: " + e.getMessage());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
             if (socketUDP != null) socketUDP.close();
         }

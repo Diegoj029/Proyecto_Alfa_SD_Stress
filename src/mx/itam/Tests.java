@@ -26,7 +26,7 @@ public class Tests {
             Thread.sleep(100);
         }
 
-        System.out.println("------Jugadores creados------");
+        System.out.println("\n------Jugadores creados------\n");
         //Thread.sleep(1000);
 
         /*for(int j = 0; j < clientes.size(); j++){
